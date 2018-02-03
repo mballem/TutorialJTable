@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,6 +19,8 @@ import java.util.List;
  * http://www.mballem.com/
  */
 public class LivroDAO implements ILivroDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(LivroDAO.class.getName());
 
     private static final String SQL_INSERT =
             "insert into LIVROS (EDITORA, TITULO, ISBN) values (?,?,?)";
@@ -42,16 +46,9 @@ public class LivroDAO implements ILivroDAO {
             pstm.setString(3, livro.getIsbn());
             result = pstm.executeUpdate();
         } catch (SQLException e) {
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }  finally {
-                DBConnection.close(conn, pstm, null);
-            }
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Um erro ocorreu ao tentar salvar o registro.", e);
+        } finally {
+            DBConnection.close(conn, pstm, null);
         }
         return result;
     }
@@ -68,16 +65,9 @@ public class LivroDAO implements ILivroDAO {
             pstm.setLong(4, livro.getId());
             result = pstm.executeUpdate();
         } catch (SQLException e) {
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }  finally {
-                DBConnection.close(conn, pstm, null);
-            }
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Um erro ocorreu ao tentar editar o registro.", e);
+        } finally {
+            DBConnection.close(conn, pstm, null);
         }
         return result;
     }
@@ -91,16 +81,9 @@ public class LivroDAO implements ILivroDAO {
             pstm.setLong(1, id);
             result = pstm.executeUpdate();
         } catch (SQLException e) {
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }  finally {
-                DBConnection.close(conn, pstm, null);
-            }
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Um erro ocorreu ao tentar excluir o registro.", e);
+        } finally {
+            DBConnection.close(conn, pstm, null);
         }
         return result;
     }
@@ -123,16 +106,9 @@ public class LivroDAO implements ILivroDAO {
                 livros.add(livro);
             }
         } catch (SQLException e) {
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }  finally {
-                DBConnection.close(conn, pstm, rs);
-            }
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Um erro ocorreu ao tentar localizar os registros.", e);
+        } finally {
+            DBConnection.close(conn, pstm, rs);
         }
         return livros;
     }
