@@ -29,9 +29,6 @@ public class LivroForm extends JFrame {
     private JButton btnNew, btnSave, btnUpdate, btnRemove, btnCancel;
     private JTable table;
     private JScrollPane scrollPane;
-
-    private JLabel nLivros;
-
     private List<Livro> livroList;
     private Long idLivro;
 
@@ -62,9 +59,6 @@ public class LivroForm extends JFrame {
 
         panelAdd.add(lbIsbn);
         panelAdd.add(txtIsbn, "growx");
-
-        nLivros = new JLabel("0");
-        panelAdd.add(nLivros, "wrap para");
 
         panelButtons = new JPanel(new MigLayout());
         panelButtons.setBorder(BorderFactory.createEtchedBorder());
@@ -228,7 +222,6 @@ public class LivroForm extends JFrame {
 
     private void refreshTable() {
         livroList = new LivroController().findLivros();
-        nLivros.setText(String.valueOf(livroList.size()));
         if (livroList != null) {
             table.setModel(new LivroTableModel(livroList));
             table.setDefaultRenderer(Object.class, new LivroCellRenderer());
