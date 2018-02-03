@@ -11,10 +11,10 @@ import java.sql.*;
  */
 public class DBConnection {
 
-    private static final String URL_MYSQL = "jdbc:mysql://localhost/livros";
+    private static final String URL_MYSQL = "jdbc:mysql://localhost/livros?createDatabaseIfNotExist=true";
     private static final String DRIVER_CLASS_MYSQL = "com.mysql.jdbc.Driver";
     private static final String USER = "root";
-    private static final String PASS = "";
+    private static final String PASS = "root";
 
     public static Connection getConnection() {
         System.out.println("Conectando ao Banco de Dados");
@@ -50,13 +50,14 @@ public class DBConnection {
     public static void createTable() {
         Connection connection = getConnection();
         PreparedStatement stmt = null;
-        String sql = "CREATE TABLE IF NOT EXISTS `livros` (\n" +
-                "  `ID` bigint(20) NOT NULL AUTO_INCREMENT,\n" +
-                "  `EDITORA` varchar(50) NOT NULL,\n" +
-                "  `TITULO` varchar(50) NOT NULL,\n" +
-                "  `ISBN` varchar(50) NOT NULL,\n" +
-                "  PRIMARY KEY (`ID`)\n" +
-                ")";
+
+        String sql = "CREATE TABLE IF NOT EXISTS LIVROS (" +
+                "ID bigint(20) NOT NULL AUTO_INCREMENT, " +
+                "EDITORA varchar(50) NOT NULL, " +
+                "TITULO varchar(50) NOT NULL, " +
+                "ISBN varchar(50) NOT NULL, " +
+                "PRIMARY KEY (ID)" +
+                ") ENGINE=InnoDB";
         try {
             stmt = connection.prepareStatement(sql);
             stmt.execute();
